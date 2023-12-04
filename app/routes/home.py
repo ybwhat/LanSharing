@@ -1,5 +1,6 @@
 # app/routes/home.py
 from flask import jsonify, render_template, request
+from flask_socketio import socketio, emit
 from app import app
 
 global_str = "Hello World!"
@@ -20,3 +21,12 @@ def str_save():
     data = request.get_json()
     global_str = data.get('content')
     return jsonify({'status': 'success'})
+
+# webRTC
+@socketio.on('sdp', namespace='/webrtc')
+def webrtc_message(message):
+    emit('sdp', message, broadcast=True)
+
+@socketio.on('ice_candidate', namespace='/webrtc')
+def webrtc_ice_candidate(candidate):
+    emit('ice_candidate', candidate, broadcast=True)
