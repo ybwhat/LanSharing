@@ -30,6 +30,9 @@ function onBlur() {
   xhr.onload = function() {
     if (xhr.status === 200) {
       var response = JSON.parse(xhr.responseText);
+      if(response.status == 'error'){
+        alert(response.message);
+      }
     } else {
       // 处理其他HTTP状态码
       console.log("HTTP状态码：" + xhr.status);
@@ -49,7 +52,11 @@ function refresh() {
   xhr.onload = function() {
     if (xhr.status === 200) {
       var response = JSON.parse(xhr.responseText);
-      quill.setText(response);
+      if(response.status == 'error'){
+        alert(response.message);
+      }else{
+        quill.setText(response.data);
+      }
     } else {
       console.log("HTTP状态码：" + xhr.status);
     }
